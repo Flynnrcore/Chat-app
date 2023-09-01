@@ -1,7 +1,22 @@
 import React from "react";
 import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
+
+const validationSchema = Yup.object().shape({
+  username: Yup.string().required('Username is required'),
+  password: Yup.string().required('Password is required'),
+});
 
 export const LoginPage = () => {
+  const initialValues = {
+    username: '',
+    password: '',
+  };
+
+  const handleSubmit = (values) => {
+    console.log(values);
+  };
+
   return (
   <div className="d-flex flex-column h-100">
     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
@@ -19,12 +34,10 @@ export const LoginPage = () => {
                 <img src="./login_image.png" className="rounded-circle" alt="Войти" />
               </div>
               <Formik
-                initialValues={{ username: "", password: "" }}
-                onSubmit={({ setSubmitting }) => {
-                  console.log("Form is validated! Submitting the form...");
-                  setSubmitting(false);
-                }}
-                >
+                initialValues={initialValues}
+                onSubmit={handleSubmit}
+                validationSchema={validationSchema}
+              >
                   {() => (
                   <Form className="col-12 col-md-6 mt-3 mt-mb-0">
                     <h1 className="text-center mb-4">Войти</h1>
@@ -35,7 +48,7 @@ export const LoginPage = () => {
                       required="" 
                       placeholder="Ваш ник" 
                       id="username" 
-                      className="form-control" 
+                      className="form-control"
                       />
                       <label htmlFor="username">Ваш ник</label></div><div className="form-floating mb-4">
 
@@ -46,7 +59,7 @@ export const LoginPage = () => {
                       placeholder="Пароль" 
                       type="password" 
                       id="password" 
-                      className="form-control"  
+                      className="form-control" 
                       />
                       <label className="form-label" htmlFor="password">Пароль</label>
                     </div>
