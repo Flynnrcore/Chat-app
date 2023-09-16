@@ -1,16 +1,11 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App.js';
-import reportWebVitals from './reportWebVitals.js';
+import init from './init.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import  './index.css';
+import 'react-toastify/dist/ReactToastify.css';
 
-const root = ReactDOM.createRoot(document.getElementById('chat'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const app = async () => {
+  const root = ReactDOM.createRoot(document.getElementById('chat'));
+  root.render(await init());
+};
 
-reportWebVitals();
+app();
