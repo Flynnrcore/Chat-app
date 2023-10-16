@@ -1,22 +1,56 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React from 'react';
-import { Formik, Form, Field } from 'formik';
+import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button, Form, FloatingLabel } from 'react-bootstrap';
+import axios from 'axios';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import useAuth from '../hooks';
+import routes from '../hooks/routes';
 
-const validationSchema = Yup.object().shape({
-  username: Yup.string().required('Username is required'),
-  password: Yup.string().required('Password is required'),
+const schema = Yup.object().shape({
+  username: Yup.string().required('Заполните это поле'),
+  password: Yup.string().required('Заполните это поле'),
 });
 
 const LoginPage = () => {
-  const initialValues = {
-    username: '',
-    password: '',
-  };
+  const auth = useAuth();
+  const [authFalied, setAuthFailed] = useState(false);
+  const inputRef = useRef();
+  const navigate = useNavigate();
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+  console.log(authFalied);
 
-  const handleSubmit = (values) => {
-    console.log(values);
-  };
+  const formik = useFormik({
+    validationSchema: schema,
+    initialValues: {
+      username: '',
+      password: '',
+    },
+    onSubmit: ({ username, password }) => {
+      setAuthFailed(false);
+
+      axios.post(routes.loginPath(), { username, password })
+        .then(({ data }) => {
+          localStorage.setItem('userId', JSON.stringify(data));
+          auth.logIn();
+          navigate('/');
+        })
+        .catch((err) => {
+          formik.setSubmitting(false);
+          if (err.isAxiosError && err.response.status === 401) {
+            setAuthFailed(true);
+            inputRef.current.select();
+            return;
+          }
+          throw err;
+        });
+    },
+  });
+
+  console.log(formik.errors);
 
   return (
     <div className="d-flex flex-column h-100">
@@ -34,49 +68,53 @@ const LoginPage = () => {
                 <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
                   <img src="./login_image.png" className="rounded-circle" alt="Войти" />
                 </div>
-                <Formik
-                  initialValues={initialValues}
-                  onSubmit={handleSubmit}
-                  validationSchema={validationSchema}
+                <Form
+                  onSubmit={formik.handleSubmit}
+                  className="col-12 col-md-6 mt-3 mt-mb-0"
                 >
-                  {() => (
-                    <Form className="col-12 col-md-6 mt-3 mt-mb-0">
-                      <h1 className="text-center mb-4">Войти</h1>
-                      <div className="form-floating mb-3">
-                        <Field
-                          name="username"
-                          autoComplete="username"
-                          required=""
-                          placeholder="Ваш ник"
-                          id="username"
-                          className="form-control"
-                        />
-                        <label htmlFor="username">
-                          Ваш ник
-                        </label>
-                      </div>
-                      <div className="form-floating mb-4">
-                        <Field
-                          name="password"
-                          autoComplete="current-password"
-                          required=""
-                          placeholder="Пароль"
-                          type="password"
-                          id="password"
-                          className="form-control"
-                        />
-                        <label className="form-label" htmlFor="password">
-                          Пароль
-                        </label>
-                      </div>
-                      <button type="submit" className="w-100 mb-3 btn btn-outline-primary">Войти</button>
-                    </Form>
-                  )}
-                </Formik>
+                  <h1 className="text-center mb-4">Войти</h1>
+                  <Form.Group>
+                    <FloatingLabel
+                      id="floatingUsername"
+                      label="Ваш ник"
+                      className="mb-3"
+                    >
+                      <Form.Control
+                        id="username"
+                        name="username"
+                        onChange={formik.handleChange}
+                        value={formik.values.username}
+                        type="text"
+                        placeholder="username"
+                        isInvalid={authFalied}
+                        ref={inputRef}
+                      />
+                    </FloatingLabel>
+                  </Form.Group>
+                  <Form.Group>
+                    <FloatingLabel
+                      id="floationgPassword"
+                      label="Пароль"
+                      className="mb-4"
+                    >
+                      <Form.Control
+                        id="password"
+                        name="password"
+                        onChange={formik.handleChange}
+                        value={formik.values.password}
+                        type="password"
+                        placeholder="password"
+                        isInvalid={authFalied}
+                      />
+                    </FloatingLabel>
+                  </Form.Group>
+                  <Form.Control.Feedback type="invalid" tooltip>Неверные имя пользователя или пароль</Form.Control.Feedback>
+                  <Button variant="primary" type="submit">Войти</Button>
+                </Form>
               </div>
               <div className="card-footer p-4">
                 <div className="text-center">
-                  <span>Нет аккаунта?</span>
+                  <span>Нет аккаунта? </span>
                   <a href="/signup">Регистрация</a>
                 </div>
               </div>

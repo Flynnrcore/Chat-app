@@ -1,13 +1,19 @@
 import React from 'react';
+// import axios from 'axios';
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import App from './components/App';
 import resources from './locales/index.js';
 
-const init = async () => {
+const init = () => {
   const i18n = i18next.createInstance();
 
-  await i18n
+  /* await axios.post('/api/v1/login', { username: 'admin', password: 'admin' })
+  .then((response) => {
+    console.log(response.data);
+  }); */
+
+  i18n
     .use(initReactI18next)
     .init({
       resources,
