@@ -4,12 +4,11 @@ import {
   BrowserRouter,
   Routes,
   Route,
-  // Link,
   Navigate,
   useLocation,
 } from 'react-router-dom';
-// import { Button, Navbar, Nav } from 'react-bootstrap';
 
+import Navbar from './Navbar.jsx';
 import LoginPage from './LoginPage.jsx';
 import ErrorPage from './ErrorPage.jsx';
 import ChatPage from './ChatPage.jsx';
@@ -17,7 +16,8 @@ import AuthContext from '../contexts/index.jsx';
 import useAuth from '../hooks/index.jsx';
 
 const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const checkLogged = Boolean(localStorage.getItem('userId'));
+  const [loggedIn, setLoggedIn] = useState(checkLogged);
 
   const logIn = () => setLoggedIn(true);
   const logOut = () => {
@@ -33,30 +33,37 @@ const AuthProvider = ({ children }) => {
 };
 
 const CheckLogged = ({ children }) => {
-  const auth = useAuth();
+  const { loggedIn } = useAuth();
   const location = useLocation();
 
   return (
-    auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }} />
+    loggedIn ? children : <Navigate to="/login" state={{ from: location }} />
   );
 };
 
 const App = () => (
   <AuthProvider>
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={(
-            <CheckLogged>
-              <ChatPage />
-            </CheckLogged>
-          )}
-        />
-        <Route path="login" element={<LoginPage />} />
-        <Route path="*" element={<ErrorPage />} />
-      </Routes>
-    </BrowserRouter>
+    <div className="h-100">
+      <div className="h-100" id="chat">
+        <div className="d-flex flex-column h-100">
+          <Navbar />
+          <BrowserRouter>
+            <Routes>
+              <Route
+                path="/"
+                element={(
+                  <CheckLogged>
+                    <ChatPage />
+                  </CheckLogged>
+                )}
+              />
+              <Route path="login" element={<LoginPage />} />
+              <Route path="*" element={<ErrorPage />} />
+            </Routes>
+          </BrowserRouter>
+        </div>
+      </div>
+    </div>
   </AuthProvider>
 );
 

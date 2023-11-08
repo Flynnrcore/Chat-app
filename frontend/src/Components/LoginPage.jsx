@@ -21,7 +21,6 @@ const LoginPage = () => {
   useEffect(() => {
     inputRef.current.focus();
   }, []);
-  console.log(authFalied);
 
   const formik = useFormik({
     validationSchema: schema,
@@ -50,16 +49,8 @@ const LoginPage = () => {
     },
   });
 
-  console.log(formik.errors);
-
   return (
     <div className="d-flex flex-column h-100">
-      <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
-        <div className="container">
-          <a className="navbar-brand" href="/">Chat</a>
-          <button type="button" className="btn btn-primary">Выйти</button>
-        </div>
-      </nav>
       <div className="container-fluid h-100">
         <div className="row justify-content-center align-content-center h-100">
           <div className="col-12 col-md-8 col-xxl-6">
