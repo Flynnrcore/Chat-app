@@ -15,5 +15,5 @@ const messagesSlice = createSlice({
   },
 });
 
-export const { fetchChannelsList } = messagesSlice.actions;
+export const { fetchMessagesList } = messagesSlice.actions;
 export default messagesSlice.reducer;
