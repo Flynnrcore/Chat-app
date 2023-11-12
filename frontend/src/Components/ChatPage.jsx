@@ -1,35 +1,32 @@
 import axios from 'axios';
 import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import routes from '../hooks/routes';
-import { fetchChannelsList } from '../slices/channelsSlice';
 import ChannelsSection from './ChannelsSection';
 import MessagesSection from './MessagesSections';
+import { actions as ChannelsActions } from '../slices/channelsSlice';
 
 const getAuthHeader = () => {
-  const userId = JSON.parse(localStorage.getItem('userId'));
+  const userToken = JSON.parse(localStorage.getItem('user'));
 
-  if (userId && userId.token) {
-    return { Authorization: `Bearer ${userId.token}` };
+  if (userToken) {
+    return { Authorization: `Bearer ${userToken}` };
   }
 
   return {};
 };
 
 const ChatPage = () => {
-  const { channels, currentChannelId } = useSelector((state) => state.chatChannels);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchChannels = async () => {
       const { data } = await axios.get(routes.usersPath(), { headers: getAuthHeader() });
-      dispatch(fetchChannelsList(data));
-      console.log(data);
+      dispatch(ChannelsActions.setInitialState(data));
     };
 
     fetchChannels();
   }, []);
-  console.log(channels, currentChannelId);
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">

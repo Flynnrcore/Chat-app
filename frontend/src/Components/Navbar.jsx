@@ -1,8 +1,8 @@
-import useAuth from '../hooks';
+import { useAuth } from '../hooks';
 
 const NavBar = () => {
-  const { loggedIn, logOut } = useAuth();
-  const logOutBtn = loggedIn ? <button type="button" onClick={() => logOut()} className="btn btn-primary">Выйти</button> : null;
+  const { user, logOut } = useAuth();
+  const logOutBtn = user ? <button type="button" onClick={() => logOut()} className="btn btn-primary">Выйти</button> : null;
   return (
     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
       <div className="container">
