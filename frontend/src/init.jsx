@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import store, { actions } from './slices/index.js';
-import App from './components/App';
+import App from './components/App.js';
 import resources from './locales/index.js';
 import { ApiContext } from './contexts';
 
