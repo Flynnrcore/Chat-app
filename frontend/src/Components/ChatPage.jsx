@@ -2,9 +2,11 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import routes from '../hooks/routes';
-import ChannelsSection from './ChannelsSection';
-import MessagesSection from './MessagesSections';
-import { actions as ChannelsActions } from '../slices/channelsSlice';
+import ChannelsSection from './ChannelsSection.jsx';
+import MessagesSection from './MessagesSections.jsx';
+import Modal from './modals/Modal.jsx';
+import { useAuth } from '../hooks/index.jsx';
+import { actions as ChannelsActions } from '../slices/channelsSlice.jsx';
 
 const getAuthHeader = () => {
   const userToken = JSON.parse(localStorage.getItem('user'));
@@ -17,6 +19,7 @@ const getAuthHeader = () => {
 };
 
 const ChatPage = () => {
+  const auth = useAuth();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -26,19 +29,22 @@ const ChatPage = () => {
     };
 
     fetchChannels();
-  }, []);
+  }, [dispatch, auth]);
 
   return (
-    <div className="container h-100 my-4 overflow-hidden rounded shadow">
-      <div className="row h-100 bg-white flex-md-row">
-        <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
-          <ChannelsSection />
-        </div>
-        <div className="col p-0 h-100">
-          <MessagesSection />
+    <>
+      <Modal />
+      <div className="container h-100 my-4 overflow-hidden rounded shadow">
+        <div className="row h-100 bg-white flex-md-row">
+          <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
+            <ChannelsSection />
+          </div>
+          <div className="col p-0 h-100">
+            <MessagesSection />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
