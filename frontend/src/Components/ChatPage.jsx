@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import routes from '../hooks/routes';
 import ChannelsSection from './ChannelsSection.jsx';
 import MessagesSection from './MessagesSections.jsx';
@@ -19,17 +21,31 @@ const getAuthHeader = () => {
 };
 
 const ChatPage = () => {
+  const { t } = useTranslation();
   const auth = useAuth();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchChannels = async () => {
-      const { data } = await axios.get(routes.usersPath(), { headers: getAuthHeader() });
-      dispatch(ChannelsActions.setInitialState(data));
+    const fetchData = async () => {
+      try {
+        const { data } = await axios.get(routes.usersPath(), { headers: getAuthHeader() });
+        dispatch(ChannelsActions.setInitialState(data));
+      } catch (error) {
+        if (!error.isAxiosError) {
+          throw new Error(t('errors.unknown'));
+          // return;
+        }
+        if (error.response?.status === 401) {
+          navigate(routes.loginPagePath());
+        } else {
+          throw new Error(t('errors.network'));
+        }
+      }
     };
 
-    fetchChannels();
-  }, [dispatch, auth]);
+    fetchData();
+  }, [dispatch, auth, navigate, t]);
 
   return (
     <>

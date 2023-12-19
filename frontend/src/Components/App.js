@@ -13,6 +13,7 @@ import ErrorPage from './ErrorPage.jsx';
 import ChatPage from './ChatPage.jsx';
 import { useAuth } from '../hooks/index.jsx';
 import AuthProvider from './AuthProvider.jsx';
+import SignupPage from './SignupPage.jsx';
 
 const CheckLogged = ({ children }) => {
   const auth = useAuth();
@@ -36,6 +37,7 @@ const App = () => (
             )}
           />
           <Route path="login" element={<LoginPage />} />
+          <Route path="signup" element={<SignupPage />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>

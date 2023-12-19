@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Modal as ElModal, Button, Form } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useApi } from '../../hooks/index.jsx';
@@ -8,6 +9,7 @@ import { useApi } from '../../hooks/index.jsx';
 const getChannelsName = ({ chatChannels: { channels } }) => channels.map(({ name }) => name);
 
 const RenameChannelModal = ({ handleClose }) => {
+  const { t } = useTranslation();
   const channelsNames = useSelector(getChannelsName);
   const channelId = useSelector(({ modal }) => modal.id);
   const channel = useSelector(({ chatChannels: { channels } }) => channels
@@ -47,7 +49,7 @@ const RenameChannelModal = ({ handleClose }) => {
   return (
     <>
       <ElModal.Header closeButton>
-        <ElModal.Title>Переименовать канал</ElModal.Title>
+        <ElModal.Title>{t('modals.rename')}</ElModal.Title>
       </ElModal.Header>
       <ElModal.Body>
         <Form onSubmit={formik.handleSubmit}>
@@ -69,14 +71,14 @@ const RenameChannelModal = ({ handleClose }) => {
                 type="button"
                 onClick={handleClose}
               >
-                Отмена
+                {t('modals.cancel')}
               </Button>
               <Button
                 variant="primary"
                 type="submit"
                 disabled={formik.isSubmitting}
               >
-                Принять
+                {t('modals.submit')}
               </Button>
             </div>
           </Form.Group>

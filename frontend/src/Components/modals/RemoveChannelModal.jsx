@@ -1,8 +1,10 @@
 import { Modal as ElModal, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useApi } from '../../hooks/index.jsx';
 
 const RemoveChannelModal = ({ handleClose }) => {
+  const { t } = useTranslation();
   const channelId = useSelector(({ modal }) => modal.id);
   const api = useApi();
 
@@ -18,10 +20,10 @@ const RemoveChannelModal = ({ handleClose }) => {
   return (
     <>
       <ElModal.Header closeButton>
-        <ElModal.Title>Удалить канал</ElModal.Title>
+        <ElModal.Title>{t('modals.remove')}</ElModal.Title>
       </ElModal.Header>
       <ElModal.Body>
-        <p className="lead">Удалить?</p>
+        <p className="lead">{t('modals.confirmation')}</p>
         <div className="d-flex justify-content-end">
           <Button
             className="me-2"
@@ -29,14 +31,14 @@ const RemoveChannelModal = ({ handleClose }) => {
             type="button"
             onClick={handleClose}
           >
-            Отменить
+            {t('modals.cancel')}
           </Button>
           <Button
             variant="danger"
             type="button"
             onClick={handleRemove}
           >
-            Принять
+            {t('modals.confirm')}
           </Button>
         </div>
       </ElModal.Body>

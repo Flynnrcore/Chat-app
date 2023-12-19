@@ -3,12 +3,14 @@ import { Modal as ElModal, Button, Form } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { useTranslation } from 'react-i18next';
 import { actions } from '../../slices/index.js';
 import { useApi } from '../../hooks/index.jsx';
 
 const getChannelsName = ({ chatChannels: { channels } }) => channels.map(({ name }) => name);
 
 const AddChannelModal = ({ handleClose }) => {
+  const { t } = useTranslation();
   const dispath = useDispatch();
   const channels = useSelector(getChannelsName);
   const api = useApi();
@@ -48,7 +50,7 @@ const AddChannelModal = ({ handleClose }) => {
   return (
     <>
       <ElModal.Header closeButton>
-        <ElModal.Title>Добавить канал</ElModal.Title>
+        <ElModal.Title>{t('modals.add')}</ElModal.Title>
       </ElModal.Header>
       <ElModal.Body>
         <Form onSubmit={formik.handleSubmit}>
@@ -69,13 +71,13 @@ const AddChannelModal = ({ handleClose }) => {
                 type="button"
                 onClick={handleClose}
               >
-                Отмена
+                {t('modals.cancel')}
               </Button>
               <Button
                 variant="primary"
                 type="submit"
               >
-                Принять
+                {t('modals.submit')}
               </Button>
             </div>
           </Form.Group>

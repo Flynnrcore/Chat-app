@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Form, FloatingLabel } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -14,6 +15,7 @@ const schema = Yup.object().shape({
 });
 
 const LoginPage = () => {
+  const { t } = useTranslation();
   const { logIn } = useAuth();
   const [authFalied, setAuthFailed] = useState(false);
   const inputRef = useRef();
@@ -62,11 +64,11 @@ const LoginPage = () => {
                   onSubmit={formik.handleSubmit}
                   className="col-12 col-md-6 mt-3 mt-mb-0"
                 >
-                  <h1 className="text-center mb-4">Войти</h1>
+                  <h1 className="text-center mb-4">{t('login.header')}</h1>
                   <Form.Group>
                     <FloatingLabel
                       id="floatingUsername"
-                      label="Ваш ник"
+                      label={t('login.username')}
                       className="mb-3"
                     >
                       <Form.Control
@@ -75,7 +77,7 @@ const LoginPage = () => {
                         onChange={formik.handleChange}
                         value={formik.values.username}
                         type="text"
-                        placeholder="username"
+                        placeholder={t('login.username')}
                         isInvalid={authFalied}
                         ref={inputRef}
                       />
@@ -84,7 +86,7 @@ const LoginPage = () => {
                   <Form.Group>
                     <FloatingLabel
                       id="floationgPassword"
-                      label="Пароль"
+                      label={t('login.password')}
                       className="mb-4"
                     >
                       <Form.Control
@@ -93,19 +95,20 @@ const LoginPage = () => {
                         onChange={formik.handleChange}
                         value={formik.values.password}
                         type="password"
-                        placeholder="password"
+                        placeholder={t('login.password')}
                         isInvalid={authFalied}
                       />
                     </FloatingLabel>
                   </Form.Group>
-                  <Form.Control.Feedback type="invalid" tooltip>Неверные имя пользователя или пароль</Form.Control.Feedback>
-                  <Button variant="primary" type="submit">Войти</Button>
+                  <Form.Control.Feedback type="invalid" tooltip>{t('login.authFailed')}</Form.Control.Feedback>
+                  <Button variant="primary" type="submit">{t('login.submit')}</Button>
                 </Form>
               </div>
               <div className="card-footer p-4">
                 <div className="text-center">
-                  <span>Нет аккаунта? </span>
-                  <a href="/signup">Регистрация</a>
+                  <span>{t('login.notAUser')}</span>
+                  {' '}
+                  <a href="/signup">{t('login.signup')}</a>
                 </div>
               </div>
             </div>
