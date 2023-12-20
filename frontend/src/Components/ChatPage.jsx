@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import routes from '../hooks/routes';
 import ChannelsSection from './ChannelsSection.jsx';
 import MessagesSection from './MessagesSections.jsx';
@@ -33,13 +34,13 @@ const ChatPage = () => {
         dispatch(ChannelsActions.setInitialState(data));
       } catch (error) {
         if (!error.isAxiosError) {
-          throw new Error(t('errors.unknown'));
-          // return;
+          toast.error(t('errors.unknown'));
+          return;
         }
         if (error.response?.status === 401) {
           navigate(routes.loginPagePath());
         } else {
-          throw new Error(t('errors.network'));
+          toast.error(t('errors.network'));
         }
       }
     };

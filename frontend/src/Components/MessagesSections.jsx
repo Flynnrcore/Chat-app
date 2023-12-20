@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
+import filter from 'leo-profanity';
 import * as yup from 'yup';
 import { useAuth, useApi } from '../hooks/index.jsx';
 
@@ -108,7 +109,7 @@ const MessagesSection = () => {
           <div key={id} className="text-break mb-2">
             <b>{username}</b>
             {': '}
-            {body}
+            {filter.clean(body)}
           </div>
         ))}
       </div>

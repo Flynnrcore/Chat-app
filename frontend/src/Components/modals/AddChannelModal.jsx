@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { actions } from '../../slices/index.js';
 import { useApi } from '../../hooks/index.jsx';
 
@@ -40,6 +41,7 @@ const AddChannelModal = ({ handleClose }) => {
       try {
         const data = await api.createChannel(channel);
         dispath(actions.setCurrentChannel({ channelId: data.id }));
+        toast.success(t('channels.created'));
         handleClose();
       } catch (error) {
         console.error(error);
@@ -64,6 +66,7 @@ const AddChannelModal = ({ handleClose }) => {
               name="name"
               id="name"
             />
+            <label className="visually-hidden" htmlFor="name">{t('modals.channelName')}</label>
             <div className="d-flex justify-content-end">
               <Button
                 className="me-2"

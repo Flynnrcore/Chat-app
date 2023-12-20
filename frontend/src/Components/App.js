@@ -7,6 +7,7 @@ import {
   useLocation,
 } from 'react-router-dom';
 
+import { ToastContainer as ToastDiv } from 'react-toastify';
 import Navbar from './Navbar.jsx';
 import LoginPage from './LoginPage.jsx';
 import ErrorPage from './ErrorPage.jsx';
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="signup" element={<SignupPage />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
+        <ToastDiv />
       </BrowserRouter>
     </div>
   </AuthProvider>

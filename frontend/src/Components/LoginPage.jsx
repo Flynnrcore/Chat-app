@@ -9,20 +9,20 @@ import * as Yup from 'yup';
 import { useAuth } from '../hooks';
 import routes from '../hooks/routes';
 
-const schema = Yup.object().shape({
-  username: Yup.string().required('Заполните это поле'),
-  password: Yup.string().required('Заполните это поле'),
-});
-
 const LoginPage = () => {
   const { t } = useTranslation();
   const { logIn } = useAuth();
-  const [authFalied, setAuthFailed] = useState(false);
+  const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
   const navigate = useNavigate();
   useEffect(() => {
     inputRef.current.focus();
   }, []);
+
+  const schema = Yup.object().shape({
+    username: Yup.string().required(t('login.fillField')),
+    password: Yup.string().required(t('login.fillField')),
+  });
 
   const formik = useFormik({
     validationSchema: schema,
@@ -30,23 +30,19 @@ const LoginPage = () => {
       username: '',
       password: '',
     },
-    onSubmit: ({ username, password }) => {
+    onSubmit: async ({ username, password }) => {
       setAuthFailed(false);
-
-      axios.post(routes.loginPath(), { username, password })
-        .then(({ data }) => {
-          logIn(data);
-          navigate('/');
-        })
-        .catch((err) => {
-          formik.setSubmitting(false);
-          if (err.isAxiosError && err.response.status === 401) {
-            setAuthFailed(true);
-            inputRef.current.select();
-            return;
-          }
-          throw err;
-        });
+      try {
+        const { data } = await axios.post(routes.loginPath(), { username, password });
+        logIn(data);
+        navigate('/');
+      } catch (err) {
+        formik.setSubmitting(false);
+        if (err.isAxiosError && err.response.status === 401) {
+          setAuthFailed(true);
+          inputRef.current.select();
+        }
+      }
     },
   });
 
@@ -78,7 +74,8 @@ const LoginPage = () => {
                         value={formik.values.username}
                         type="text"
                         placeholder={t('login.username')}
-                        isInvalid={authFalied}
+                        isInvalid={authFailed}
+                        required
                         ref={inputRef}
                       />
                     </FloatingLabel>
@@ -96,11 +93,14 @@ const LoginPage = () => {
                         value={formik.values.password}
                         type="password"
                         placeholder={t('login.password')}
-                        isInvalid={authFalied}
+                        required
+                        isInvalid={authFailed}
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {t('login.authFailed')}
+                      </Form.Control.Feedback>
                     </FloatingLabel>
                   </Form.Group>
-                  <Form.Control.Feedback type="invalid" tooltip>{t('login.authFailed')}</Form.Control.Feedback>
                   <Button variant="primary" type="submit">{t('login.submit')}</Button>
                 </Form>
               </div>
