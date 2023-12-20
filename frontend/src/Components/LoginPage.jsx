@@ -96,9 +96,9 @@ const LoginPage = () => {
                         required
                         isInvalid={authFailed}
                       />
-                      <Form.Control.Feedback type="invalid">
-                        {t('login.authFailed')}
-                      </Form.Control.Feedback>
+                      <Form.Text className="text-danger">
+                        {authFailed ? t('login.authFailed') : null}
+                      </Form.Text>
                     </FloatingLabel>
                   </Form.Group>
                   <Button variant="primary" type="submit">{t('login.submit')}</Button>
