@@ -16,6 +16,7 @@ const RemoveChannelModal = ({ handleClose }) => {
       handleClose();
     } catch (error) {
       console.error(error);
+      toast.warning(t('errors.network'));
     }
   };
 

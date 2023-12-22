@@ -1,18 +1,18 @@
 import { useEffect, useRef } from 'react';
 import { Modal as ElModal, Button, Form } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { actions } from '../../slices/index.js';
+// import { actions } from '../../slices/index.js';
 import { useApi } from '../../hooks/index.jsx';
 
 const getChannelsName = ({ chatChannels: { channels } }) => channels.map(({ name }) => name);
 
 const AddChannelModal = ({ handleClose }) => {
   const { t } = useTranslation();
-  const dispath = useDispatch();
+  // const dispath = useDispatch();
   const channels = useSelector(getChannelsName);
   const api = useApi();
 
@@ -39,12 +39,13 @@ const AddChannelModal = ({ handleClose }) => {
     onSubmit: async ({ name }) => {
       const channel = { name };
       try {
-        const data = await api.createChannel(channel);
-        dispath(actions.setCurrentChannel({ channelId: data.id }));
+        await api.createChannel(channel);
+        // dispath(actions.setCurrentChannel({ channelId: data.id }));
         toast.success(t('channels.created'));
         handleClose();
       } catch (error) {
         console.error(error);
+        toast.warning(t('errors.network'));
       }
     },
   });
@@ -63,10 +64,12 @@ const AddChannelModal = ({ handleClose }) => {
               className="mb-2"
               onChange={formik.handleChange}
               value={formik.values.name}
+              isInvalid={formik.errors.name && formik.touched.name}
               name="name"
               id="name"
             />
             <label className="visually-hidden" htmlFor="name">{t('modals.channelName')}</label>
+            {formik.errors.name && formik.touched.name && <div className="text-danger">{t(formik.errors.name)}</div>}
             <div className="d-flex justify-content-end">
               <Button
                 className="me-2"
