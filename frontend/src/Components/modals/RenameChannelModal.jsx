@@ -68,6 +68,7 @@ const RenameChannelModal = ({ handleClose }) => {
               name="name"
               id="name"
             />
+            <label className="visually-hidden" htmlFor="name">{t('modals.channelName')}</label>
             {formik.errors.name && formik.touched.name && <div className="text-danger">{t(formik.errors.name)}</div>}
             <div className="d-flex justify-content-end">
               <Button

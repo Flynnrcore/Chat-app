@@ -7,7 +7,7 @@ import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from '../hooks';
-import routes from '../hooks/routes';
+import routes from '../routes.js';
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -33,9 +33,9 @@ const LoginPage = () => {
     onSubmit: async ({ username, password }) => {
       setAuthFailed(false);
       try {
-        const { data } = await axios.post(routes.loginPath(), { username, password });
+        const { data } = await axios.post(routes.loginApiPath(), { username, password });
         logIn(data);
-        navigate('/');
+        navigate(routes.chatPagePath());
       } catch (err) {
         formik.setSubmitting(false);
         if (err.isAxiosError && err.response.status === 401) {

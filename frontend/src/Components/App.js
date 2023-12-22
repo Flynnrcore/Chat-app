@@ -15,12 +15,13 @@ import ChatPage from './ChatPage.jsx';
 import { useAuth } from '../hooks/index.jsx';
 import AuthProvider from './AuthProvider.jsx';
 import SignupPage from './SignupPage.jsx';
+import routes from '../routes.js';
 
 const CheckLogged = ({ children }) => {
   const auth = useAuth();
   const location = useLocation();
 
-  return auth.user ? children : <Navigate to="/login" state={{ from: location }} />;
+  return auth.user ? children : <Navigate to={routes.loginPagePath()} state={{ from: location }} />;
 };
 
 const App = () => (
