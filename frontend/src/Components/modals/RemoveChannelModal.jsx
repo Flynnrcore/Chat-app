@@ -15,7 +15,6 @@ const RemoveChannelModal = ({ handleClose }) => {
       toast.success(t('channels.removed'));
       handleClose();
     } catch (error) {
-      console.error(error);
       toast.warning(t('errors.network'));
     }
   };

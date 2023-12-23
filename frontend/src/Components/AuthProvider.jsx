@@ -1,4 +1,5 @@
-import { useState, useMemo } from 'react';
+/* eslint-disable react/jsx-no-constructed-context-values */
+import { useState } from 'react';
 import { AuthContext } from '../contexts';
 
 const AuthProvider = ({ children }) => {
@@ -15,11 +16,22 @@ const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  const auth = useMemo(() => ({
+  const getAuthHeader = () => {
+    const userToken = JSON.parse(localStorage.getItem('user'));
+
+    if (userToken) {
+      return { Authorization: `Bearer ${userToken}` };
+    }
+
+    return {};
+  };
+
+  const auth = {
     logIn,
     logOut,
+    getAuthHeader,
     user,
-  }), [user]);
+  };
 
   return (
     <AuthContext.Provider value={auth}>

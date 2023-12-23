@@ -43,7 +43,6 @@ const RenameChannelModal = ({ handleClose }) => {
         toast.success(t('channels.renamed'));
         handleClose();
       } catch (error) {
-        console.error(error);
         toast.warning(t('errors.network'));
       }
     },

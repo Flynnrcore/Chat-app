@@ -31,16 +31,16 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route
-            path="/"
+            path={routes.chatPagePath()}
             element={(
               <CheckLogged>
                 <ChatPage />
               </CheckLogged>
             )}
           />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="signup" element={<SignupPage />} />
-          <Route path="*" element={<ErrorPage />} />
+          <Route path={routes.loginPagePath()} element={<LoginPage />} />
+          <Route path={routes.signupPagePath()} element={<SignupPage />} />
+          <Route path={routes.errorPagePath()} element={<ErrorPage />} />
         </Routes>
         <ToastDiv />
       </BrowserRouter>
