@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import routes from '../routes.js';
 
 const ErrorPage = () => {
   const { t } = useTranslation();
@@ -8,7 +9,7 @@ const ErrorPage = () => {
       <h1 className="h4 text-muted">{t('notFound.header')}</h1>
       <p className="text-muted">
         {t('notFound.message')}
-        <a href="/">{t('notFound.link')}</a>
+        <a href={routes.chatPagePath()}>{t('notFound.link')}</a>
       </p>
     </div>
   );
