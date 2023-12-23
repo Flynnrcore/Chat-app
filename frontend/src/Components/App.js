@@ -40,7 +40,7 @@ const App = () => (
           />
           <Route path={routes.loginPagePath()} element={<LoginPage />} />
           <Route path={routes.signupPagePath()} element={<SignupPage />} />
-          <Route path={routes.errorPagePath()} element={<ErrorPage />} />
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
         <ToastDiv />
       </BrowserRouter>

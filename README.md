@@ -10,7 +10,7 @@ A one-page (SPA) chat application with full functionality: creating an account a
 ## System requirements
 
 ```sh
-node >= 18.x.x
+node >=18.18.0 <19.0.0
 ```
 
 ## Setup
@@ -19,7 +19,7 @@ node >= 18.x.x
 $ make install
 ```
 
-## start
+## Start
 
 ```sh
 $ make start
